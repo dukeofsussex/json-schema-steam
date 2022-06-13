@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "appid": {
+      "$ref": "./itemdef.json#/$defs/appid"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "./itemdef.json"
+      }
+    }
+  },
+  "required": [
+    "appid",
+    "items"
+  ]
+}

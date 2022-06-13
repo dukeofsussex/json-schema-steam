@@ -1,0 +1,572 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "appid": {
+      "$ref": "#/$defs/appid"
+    },
+    "auto_stack": {
+      "type": "boolean",
+      "description": "If true, item grants will automatically be added to a single stack of the given type. Grants will be visible in inventory callbacks as quantity changes. Defaults to false."
+    },
+    "background_color": {
+      "$ref": "#/$defs/color",
+      "description": "The color to display in the inventory background as 6 hex digits."
+    },
+    "bundle": {
+      "type": "string",
+      "description": "See https://partner.steamgames.com/doc/features/inventory/schema#SpecifyBundles",
+      "pattern": "^(\\d+(?:x\\d+)?;?)+$"
+    },
+    "drop_interval": {
+      "type": "number",
+      "description": "Playtime in minutes before the item can be granted to the user.",
+      "minimum": 0
+    },
+    "drop_limit": {
+      "type": "number",
+      "description": "Limits for a specific user the number of times this item will be dropped via ISteamInventory::TriggerItemDrop. Setting to zero will prevent any future drops of this item. See https://partner.steamgames.com/doc/features/inventory/schema#PlaytimeDrops",
+      "minimum": 0
+    },
+    "drop_max_per_window": {
+      "type": "number",
+      "description": "Numbers of grants within the window permitted before Cool-down applies. See https://partner.steamgames.com/doc/features/inventory/schema#PlaytimeDrops",
+      "minimum": 0
+    },
+    "drop_start_time": {
+      "type": "string",
+      "description": "UTC timestamp - prevent promo grants before this time, only applicable when promo = manual. See https://partner.steamgames.com/doc/features/inventory/schema#PromoItems",
+      "pattern": "^\\d{8}T\\d{6}Z$"
+    },
+    "drop_window": {
+      "type": "number",
+      "description": "Elapsed time in minutes of a cool-down window before we will grant an item. See https://partner.steamgames.com/doc/features/inventory/schema#PlaytimeDrops",
+      "minimum": 0
+    },
+    "exchange": {
+      "type": "string",
+      "description": "See https://partner.steamgames.com/doc/features/inventory/schema#ExchangeFormat",
+      "examples": [
+        "owns: <appid>",
+        "ach: <achievement name>",
+        "played: <appid>/<minutes played, defaults to 1>",
+        "manual"
+      ],
+      "pattern": "^(?:(?:(\\d+(?:x\\d+)?|\\w+:\\w+(?:\\*\\d+)?),?)+;?)+[^,;]$"
+    },
+    "granted_manually": {
+      "type": "boolean",
+      "description": "If true, will only be granted when AddPromoItem() or AddPromoItems() are called with the explicit item definition id. Otherwise, it may be granted via the GrantPromoItems() call. Defaults to false."
+    },
+    "hidden": {
+      "type": "boolean",
+      "description": "If true, the item definition will not be shown to clients. Use this to hide unused, or under-development, itemdefs."
+    },
+    "icon_url": {
+      "$ref": "#/$defs/url",
+      "description": "The URL to the item's small icon. The URL should be publicly accessible because the Steam servers will download and cache. Recommended size is 200x200."
+    },
+    "icon_url_large": {
+      "$ref": "#/$defs/url",
+      "description": "The URL to the item's large image. The URL should be publicly accessible because the Steam servers will download and cache. Recommended size is 2048x2048."
+    },
+    "itemdefid": {
+      "type": "number",
+      "description": "The ID of this itemdef. This must be lower than 1,000,000 for non-workshop items.",
+      "maximum": 999999,
+      "minimum": 1
+    },
+    "marketable": {
+      "type": "boolean",
+      "description": "Whether this item can be sold to other users in the Steam Community Market."
+    },
+    "name_color": {
+      "$ref": "#/$defs/color",
+      "description": "The color to display the name in the inventory as 6 hex digits."
+    },
+    "price": {
+      "type": "string",
+      "description": "See https://partner.steamgames.com/doc/features/inventory/schema#SpecifyPrices",
+      "pattern": "^1;(?:(?:\\d{8}T\\d{6}Z-\\d{8}T\\d{6}Z)?([A-Z]{3}\\d+,?)+;?)+$"
+    },
+    "price_category": {
+      "type": "string",
+      "description": "A preset price, where we handle the various currency values for you. See https://partner.steamgames.com/doc/features/inventory/schema#VlvPricing",
+      "pattern": "^1;VLV(25|50|75|[1-9][05]0|1\\d00|[2-4][05]00|[5-9]000|10000)$"
+    },
+    "promo": {
+      "type": "string",
+      "description": "See https://partner.steamgames.com/doc/features/inventory/schema#PromoItems",
+      "pattern": "^(?:(?:(owns:\\d+|ach:\\w+|played:\\d+(?:\/\\d+)?);?)+|manual)$"
+    },
+    "purchase_bundle_discount": {
+      "type": "number",
+      "description": "See https://partner.steamgames.com/doc/features/inventory/schema#SellingBundles",
+      "maximum": 100,
+      "minimum": 0
+    },
+    "store_hidden": {
+      "type": "boolean",
+      "description": "If true, this item will be hidden in the Steam Item Store for your app. By default, any items with a price will be shown in the store."
+    },
+    "store_images": {
+      "type": "string",
+      "description": "Image URLs delimited by \";\" character. These images will be proxied and used on the detail page of the Steam item store for your app."
+    },
+    "store_tags": {
+      "type": "string",
+      "description": "String with \"tags\" delimited by \";\" character. These tags will be used to categorize/filter items in the Steam item store for your app.",
+      "pattern": "^(\\w+;?)+$"
+    },
+    "tag_generator_name": {
+      "type": "string",
+      "description": "Name of the tag category token. See https://partner.steamgames.com/doc/features/inventory/itemtags"
+    },
+    "tag_generator_values": {
+      "type": "string",
+      "description": "List of tag values and the chance that they will be picked. See https://partner.steamgames.com/doc/features/inventory/itemtags",
+      "pattern": "^(\\w+(?::\\d+)?;?)+$"
+    },
+    "tag_generators": {
+      "type": "string",
+      "description": "List of tag_generator item definition ids to apply. See https://partner.steamgames.com/doc/features/inventory/itemtags",
+      "pattern": "^(\\d+;?)+$"
+    },
+    "tags": {
+      "type": "string",
+      "description": "See https://partner.steamgames.com/doc/features/inventory/itemtags",
+      "pattern": "^(\\w+:\\w+;?)+$"
+    },
+    "tradable": {
+      "type": "boolean",
+      "description": "Whether this item can be traded to other users using Steam Trading."
+    },
+    "type": {
+      "type": "string",
+      "description": "\"item\": An item type that can be found in a player inventory.\n\n\"bundle\": Represents a collection of ItemDefs, with an associated quantity of each type. When this item is granted, it automatically expands into the set of items configured in the bundle property.\n\n\"generator\": Represents a random item. Granting this item will randomly select one item type from the bundle property, and create an instance of that type. (For example: imagine when a crate is unlocked, then one of the possible items is created)\n\n\"playtimegenerator\": this is a special form of generator that can be granted by the ISteamInventory::TriggerItemDrop call from the application.\n\n\"tag_generator\": Special item definition that applies tags to item instances (see Steam Inventory Item Tags for more details).",
+      "enum": [
+        "bundle",
+        "generator",
+        "item",
+        "playtimegenerator",
+        "tag_generator"
+      ]
+    },
+    "use_bundle_price": {
+      "type": "boolean",
+      "description": "See https://partner.steamgames.com/doc/features/inventory/schema#SellingBundles"
+    },
+    "use_drop_limit": {
+      "type": "boolean",
+      "description": " If true, then we rely on drop_limit to limit the items grant via ISteamInventory::TriggerItemDrop. See https://partner.steamgames.com/doc/features/inventory/schema#PlaytimeDrops"
+    },
+    "use_drop_window": {
+      "type": "boolean",
+      "description": "If true, we will use the \"drop_window\" for this itemdef. See https://partner.steamgames.com/doc/features/inventory/schema#PlaytimeDrops"
+    }
+  },
+  "dependentSchemas": {
+    "drop_start_time": {
+      "properties": {
+        "promo": {
+          "const": "manual"
+        }
+      },
+      "required": [
+        "promo"
+      ]
+    },
+    "drop_interval": {
+      "properties": {
+        "promo": {
+          "const": "manual"
+        }
+      },
+      "required": [
+        "promo"
+      ]
+    },
+    "drop_limit": {
+      "properties": {
+        "use_drop_limit": {
+          "const": true
+        }
+      },
+      "required": [
+        "use_drop_limit"
+      ]
+    },
+    "drop_max_per_window": {
+      "properties": {
+        "use_drop_window": {
+          "const": true
+        }
+      },
+      "required": [
+        "use_drop_window"
+      ]
+    },
+    "drop_window": {
+      "properties": {
+        "use_drop_window": {
+          "const": true
+        }
+      },
+      "required": [
+        "use_drop_window"
+      ]
+    },
+    "purchase_bundle_discount": {
+      "oneOf": [
+        {
+          "required": [
+            "price"
+          ]
+        },
+        {
+          "required": [
+            "price_category"
+          ]
+        }
+      ]
+    },
+    "use_bundle_price": {
+      "oneOf": [
+        {
+          "required": [
+            "price"
+          ]
+        },
+        {
+          "required": [
+            "price_category"
+          ]
+        }
+      ]
+    }
+  },
+  "not": {
+    "required": ["price", "price_category"]
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "description": {
+          "description": "The English description of your item.",
+          "type": "string"
+        },
+        "display_type": {
+          "description": "The English description of the item's \"type\".",
+          "type": "string"
+        },
+        "name": {
+          "description": "The English name of your item.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    {
+      "properties": {
+        "$comment": "Pattern properties don't work (as well) with most editors.",
+        "description_arabic": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_brazilian": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_bulgarian": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_czech": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_danish": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_dutch": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_english": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_finnish": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_french": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_german": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_greek": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_hungarian": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_italian": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_japanese": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_koreana": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_latam": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_norwegian": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_polish": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_portuguese": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_romanian": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_russian": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_schinese": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_spanish": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_swedish": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_tchinese": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_thai": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_turkish": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_ukrainian": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "description_vietnamese": {
+          "$ref": "#/$defs/description_locale"
+        },
+        "display_type_arabic": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_brazilian": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_bulgarian": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_czech": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_danish": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_dutch": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_english": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_finnish": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_french": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_german": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_greek": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_hungarian": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_italian": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_japanese": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_koreana": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_latam": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_norwegian": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_polish": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_portuguese": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_romanian": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_russian": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_schinese": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_spanish": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_swedish": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_tchinese": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_thai": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_turkish": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_ukrainian": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "display_type_vietnamese": {
+          "$ref": "#/$defs/display_type_locale"
+        },
+        "name_arabic": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_brazilian": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_bulgarian": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_czech": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_danish": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_dutch": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_english": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_finnish": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_french": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_german": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_greek": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_hungarian": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_italian": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_japanese": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_koreana": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_latam": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_norwegian": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_polish": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_portuguese": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_romanian": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_russian": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_schinese": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_spanish": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_swedish": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_tchinese": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_thai": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_turkish": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_ukrainian": {
+          "$ref": "#/$defs/name_locale"
+        },
+        "name_vietnamese": {
+          "$ref": "#/$defs/name_locale"
+        }
+      },
+      "required": [
+        "name_english"
+      ]
+    }
+  ],
+  "required": [
+    "itemdefid",
+    "type"
+  ],
+  "$defs": {
+    "appid": {
+      "type": "number",
+      "description": "The ID of your application",
+      "minimum": 1
+    },
+    "color": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]{6}$"
+    },
+    "description_locale": {
+      "description": "The localised description of your item. See https://partner.steamgames.com/doc/store/localization",
+      "type": "string"
+    },
+    "display_type_locale": {
+      "description": "The localised description of the item's \"type\". See https://partner.steamgames.com/doc/store/localization",
+      "type": "string"
+    },
+    "name_locale": {
+      "type": "string",
+      "description": "The localised name of your item. See https://partner.steamgames.com/doc/store/localization"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    }
+  }
+}
